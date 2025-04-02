@@ -1,0 +1,14 @@
+<%- include('common/header') %>
+    <div class="container">
+        <% if (blogs.length > 0) { %>
+            <% blogs.forEach(blog => { %>
+                <h3 class="title"> <%= blog.title %> </h3>
+                <p class="snippet"> <%= blog.snippet %> </p>
+            <% }) %>
+        <% } else { %>
+            <p> There are no blogs to display..... </p>
+        <% } %>
+    </div>
+<%- include('common/footer') %>
+
+
