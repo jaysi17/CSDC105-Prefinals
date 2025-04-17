@@ -4,6 +4,8 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Arial', sans-serif;
+    height: auto;
+    text-decoration: none;
 }
 
 /* ====== Body Styling ====== */
@@ -22,17 +24,21 @@ header {
     background-color: #007bff;
     color: white;
     text-align: center;
-    padding: 15px;
+    padding: 20px;
     position: fixed;
     width: 100%;
     top: 0;
     left: 0;
     z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 header h1 {
-    font-size: 24px;
-    margin-bottom: 5px;
+    color: gold;
+    font-size: 30px;
 }
 
 nav ul {
@@ -50,7 +56,7 @@ nav ul li {
 nav ul li a {
     text-decoration: none;
     color: white;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bold;
     padding: 10px 15px;
     transition: background 0.3s, border-radius 0.3s;
@@ -63,9 +69,9 @@ nav ul li a:hover {
 
 /* ====== Main Container ====== */
 .container {
-    max-height: 300px;
-    max-width: 50vw;
-    margin: auto;
+    min-width: 50vw;
+    height: auto;
+    margin: 50px auto;
     flex-grow: 1;
     background: white;
     padding: 20px;
@@ -73,10 +79,13 @@ nav ul li a:hover {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* ====== Blog Section ====== */
-.blog-container {
-    margin-top: 20px;
+.container h1 {
+    text-align: center;
+    color: gold;
 }
+
+/* ====== Blog Section ====== */
+
 
 .blog-card {
     background: white;
@@ -84,7 +93,12 @@ nav ul li a:hover {
     border-radius: 8px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     margin-bottom: 15px;
-    transition: transform 0.2s;
+    transition: background 0.5s;
+}
+
+.blog-card:hover {
+    background: gainsboro;
+    animation: linear 1s;
 }
 
 .blog-card h3 {
@@ -98,10 +112,18 @@ nav ul li a:hover {
     margin-bottom: 10px;
 }
 
+.empty-blogs {
+    color: crimson;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 80px;
+}
+
 /* ====== Create Blog Form ====== */
 .create-blog {
-    max-width: 600px;
-    margin: auto;
+    min-width: 60vw;
+    min-height: 50vh;
+    margin: 50px auto;
     padding: 20px;
     background: white;
     border-radius: 8px;
@@ -124,6 +146,10 @@ nav ul li a:hover {
     font-size: 16px;
 }
 
+.create-blog textarea {
+    min-height: 25vh;   
+}
+
 .create-blog button {
     display: block;
     width: 100%;
@@ -144,9 +170,9 @@ nav ul li a:hover {
 
 /* ====== About Page ====== */
 .about-content {
-    height: 60vh;
+    height: 80vh;
     max-width: 800px;
-    margin: auto;
+    margin: 50px auto;
     background: white;
     padding: 20px;
     border-radius: 8px;
@@ -164,26 +190,59 @@ nav ul li a:hover {
     margin-bottom: 10px;
 }
 
+/* ====== Details Page ====== */
+
+.details-content {
+    min-width: 50vw;
+    position: relative;
+    height: auto;
+    margin: 50px auto;
+    margin: 50px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.details-content h2 {
+    color: #007bff;
+    margin-bottom: 15px;
+}
+
+.details-content p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.details-content a {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: crimson;
+}
+
+.details-content a:hover {
+    cursor: pointer;
+}
+
 /* ====== 404 Page ====== */
 .error-page {
     text-align: center;
-    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 100px auto;
 }
 
 .error-page h2 {
     color: red;
-    font-size: 28px;
-}
-
-.error-page p {
-    font-size: 18px;
-    color: #666;
+    font-size: 48px;
 }
 
 /* ====== Footer ====== */
 footer {
-    background-color: #007bff;
-    color: white;
+    color: #007bff;
     text-align: center;
     padding: 15px;
     font-size: 14px;
