@@ -54,17 +54,30 @@ app.set('view engine', 'ejs')// install ejs and create views folder
 //         });
 // })
 
+//ROUTES
+
 //Home Page
 app.get('/', (req,res) => {
-    const blogs = [     
-        {title: 'Mia can lift ', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-        {title: 'Wala nang roads', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-        {title: 'Jonnie Confession', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-    ];
    res.redirect('/blogs')
 })
 
-//BLOG ROUTES
+//About Page
+app.get('/about', (req,res) => {
+    res.render('about', {title: "About"})
+})
+
+//Routing for create
+app.get('/create', (req,res) => {
+    res.render('create', {title: "Create"})
+})
+
+//Page not FOUND
+app.use('/',(req,res) => {
+    res.status(404).render('404', {title: "404"})
+})
+
+
+//CONTROLLERS
 
 //GET ALL
 app.get('/blogs', (req, res) => {
@@ -100,7 +113,7 @@ app.get('/blogs/:id', (req, res) => {
         .catch((err) => {
             console.log(err);
         });
-})
+}) 
 
 //DELETE BY ID
 app.delete('/blogs/:id', (req, res) => {
@@ -115,17 +128,4 @@ app.delete('/blogs/:id', (req, res) => {
         });
 });
 
-//About Page
-app.get('/about', (req,res) => {
-    res.render('about', {title: "About"})
-})
 
-//Routing for create
-app.get('/create', (req,res) => {
-    res.render('create', {title: "Create"})
-})
-
-//Page not FOUND
-app.use('/',(req,res) => {
-    res.status(404).render('404', {title: "404"})
-})
