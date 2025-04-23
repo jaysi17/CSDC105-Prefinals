@@ -8,7 +8,7 @@
             </div>
             <% if (blog.image && blog.image.data) { %>
                 <div class="image-section">
-                    <img src="/blogs/<%= blog._id %>/image" alt="Blog Image" />
+                    <img src="/blogs/<%= blog._id %>/image" alt="Blog Image" loading="lazy"/>
                 </div>
             <% } %>
         </div>

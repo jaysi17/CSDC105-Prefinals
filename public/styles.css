@@ -1,10 +1,16 @@
 /* ====== Global Reset ====== */
+:root {
+    --base-color: #F1EFEC;
+    --accent-colors: #D4C9BE;
+    --secondary-colors: #123458;
+    --tertiary-colors: #030303;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Arial', sans-serif;
-    height: auto;
     text-decoration: none;
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
@@ -14,8 +20,8 @@
 
 /* ====== Body Styling ====== */
 body {
-    background-color: #f4f4f4;
-    color: #333;
+    background-color: var(--secondary-colors);
+    color: var(--accent-colors);
     line-height: 1.6;
     padding-top: 80px; /* To prevent overlap with fixed navbar */
     display: flex;
@@ -26,10 +32,10 @@ body {
 
 /* ====== Header & Navigation ====== */
 header {
-    background-color: #007bff;
-    color: white;
+    background-color: var(--secondary-colors);
+    color: var(--accent-colors);
     text-align: center;
-    padding: 20px;
+    padding: 20px 30px;
     position: fixed;
     width: 100%;
     top: 0;
@@ -38,12 +44,18 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 header h1 {
-    color: gold;
-    font-size: 30px;
+    color: var(--accent-colors);
+    font-size: 40px;
+    font-weight: bolder;
+}
+header .title {
+    color: var(--tertiary-colors);
+    font-size: 40px;
+    font-weight: lighter;
 }
 
 nav ul {
@@ -60,7 +72,7 @@ nav ul li {
 
 nav ul li a {
     text-decoration: none;
-    color: white;
+    color: var(--base-color);
     font-size: 20px;
     font-weight: bold;
     padding: 10px 15px;
@@ -79,40 +91,35 @@ nav ul li a:hover {
     height: auto;
     margin: 50px auto;
     flex-grow: 1;
-    background: white;
+    background: var(--secondary-colors);
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .container h1 {
     text-align: center;
-    color: gold;
-    margin-bottom: 20px;
+    color: var(--base-color);
+    font-size: 50px;
+    margin-bottom: 50px;
 }
 
 /* ====== Blog Section ====== */
 
 .blog-card {
-    display: flex; /* enable side-by-side layout */
+    display: flex;
+    align-items: flex-start;
     gap: 15px;
-    background: white;
+    background: var(--base-color);
     padding: 15px;
     border-radius: 8px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     margin-bottom: 15px;
-    transition: background 0.5s;
-    align-items: center;
-}
-
-.blog-card:hover {
-    background: gainsboro;
-    animation: linear 1s;
+    transition: background-color 0.3s ease-in-out;
+    overflow: hidden;
 }
 
 .blog-card img {
     width: 120px;
-    height: auto;
+    height: 120px;
     object-fit: cover;
     border-radius: 5px;
     flex-shrink: 0;
@@ -120,17 +127,26 @@ nav ul li a:hover {
 
 .blog-info {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .blog-card h3 {
-    color: #007bff;
+    color: var(--tertiary-colors);
+    font-size: 20px;
     margin-bottom: 5px;
+    font-weight: 600;
 }
 
 .blog-card p.snippet {
     font-size: 16px;
     color: #555;
-    margin-bottom: 10px;
+    margin: 0;
+    line-height: 1.4;
+    max-height: 4.2em; /* Prevents long text from affecting layout */
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .empty-blogs {
@@ -147,17 +163,19 @@ nav ul li a:hover {
     min-height: 50vh;
     margin: 50px auto;
     padding: 20px;
-    background: white;
+    background: var(--base-color);
     border-radius: 8px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .create-blog h2 {
-    color: #007bff;
+    color: var(--secondary-colors);
     margin-bottom: 15px;
+    font-size: 40px;
 }
 
 .create-blog label {
+    color: var(--tertiary-colors);
     font-weight: bold;
     display: block;
     margin-top: 10px;
@@ -168,7 +186,7 @@ nav ul li a:hover {
     width: 100%;
     padding: 10px;
     margin-top: 5px;
-    border: 1px solid #ddd;
+    border: 2px solid var(--secondary-colors);
     border-radius: 5px;
     font-size: 16px;
 }
@@ -181,7 +199,7 @@ nav ul li a:hover {
     display: block;
     width: 100%;
     padding: 10px;
-    background-color: #007bff;
+    background-color: var(--secondary-colors);
     color: white;
     border: none;
     border-radius: 5px;
@@ -192,29 +210,49 @@ nav ul li a:hover {
 }
 
 .create-blog button:hover {
-    background-color: #0056b3;
+    background-color: #0056b3;   
 }
+
+input[type="file"]::file-selector-button {
+    background-color: var(--secondary-colors);
+    color: var(--base-color);
+    padding: 3px 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  input[type="file"]::file-selector-button:hover {
+    background-color: #0056b3;
+  }
+
+  /* Optional: space between button and file name */
+  input[type="file"] {
+    font-family: inherit;
+  }
 
 /* ====== About Page ====== */
 .about-content {
-    height: 80vh;
-    max-width: 800px;
+    width: 80vw;
     margin: 50px auto;
-    background: white;
-    padding: 20px;
+    background: var(--base-color);
+    padding: 50px;
     border-radius: 8px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .about-content h2 {
-    color: #007bff;
+    color: var(--secondary-colors);
+    font-size: 40px;
     margin-bottom: 15px;
 }
 
 .about-content p {
-    font-size: 16px;
-    color: #555;
-    margin-bottom: 10px;
+    font-size: 18px;
+    color: var(--tertiary-colors);
+    margin-bottom: 30px;
+    text-align: justify;
 }
 
 /* ====== Details Page ====== */
@@ -227,26 +265,26 @@ nav ul li a:hover {
     position: relative;
     height: auto;
     margin: 50px auto;
-    margin: 50px auto;
-    background: white;
-    padding: 20px;
+    background: var(--base-color);
+    padding: 50px;
     border-radius: 8px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .details-content h2 {
-    color: #007bff;
-    margin-bottom: 5px;
+    color: var(--secondary-colors);
+    font-size: 30px;
+    margin-bottom: 10px;
 }
 
 .details-content h3 {
     color: #808080;
-    margin-bottom: 15px;
+    margin-bottom: 30px;
 }
 
 .details-content p {
     font-size: 16px;
-    color: #555;
+    color: var(--tertiary-colors);
     margin-bottom: 10px;
 }
 
@@ -274,32 +312,33 @@ nav ul li a:hover {
 .details-content .content {
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
+    gap: 20px;
 }
 
 .text-container {
-    padding: 0 50px;
     text-align: justify;
     line-height: 40px;
 }
-/* ====== Edit Page ====== */
-
+/* ====== Edit Page ====== */ 
 .edit-blog {
     min-width: 60vw;
     min-height: 50vh;
     margin: 50px auto;
     padding: 20px;
-    background: white;
+    background: var(--base-color);
     border-radius: 8px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .edit-blog h2 {
-    color: #007bff;
+    color: var(--secondary-colors);
     margin-bottom: 15px;
+    font-size: 40px;
 }
 
 .edit-blog label {
+    color: var(--tertiary-colors);
     font-weight: bold;
     display: block;
     margin-top: 10px;
@@ -310,7 +349,7 @@ nav ul li a:hover {
     width: 100%;
     padding: 10px;
     margin-top: 5px;
-    border: 1px solid #ddd;
+    border: 2px solid var(--secondary-colors);
     border-radius: 5px;
     font-size: 16px;
 }
@@ -323,7 +362,7 @@ nav ul li a:hover {
     display: block;
     width: 100%;
     padding: 10px;
-    background-color: #007bff;
+    background-color: var(--secondary-colors);
     color: white;
     border: none;
     border-radius: 5px;
@@ -334,7 +373,7 @@ nav ul li a:hover {
 }
 
 .edit-blog button:hover {
-    background-color: #0056b3;
+    background-color: #0056b3;   
 }
 
 /* ====== Image ====== */
@@ -350,12 +389,6 @@ nav ul li a:hover {
     height: auto;
     border-radius: 8px;
     object-fit: cover;
-}
-
-.details-content {
-    display: flex;
-    justify-content: space-between;
-    gap: 30px;
 }
 
 .details-image {
@@ -376,13 +409,13 @@ nav ul li a:hover {
 }
 
 .error-page h2 {
-    color: red;
+    color: var(--secondary-colors);
     font-size: 48px;
 }
 
 /* ====== Footer ====== */
 footer {
-    color: #007bff;
+    color: var(--accent-colors);
     text-align: center;
     padding: 15px;
     font-size: 14px;
