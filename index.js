@@ -1,131 +1,169 @@
-const express = require('express');//install express
-const mongoose = require('mongoose'); //add mongoose library (a Object Data Modelling library for MongoDb in NodeJs)
-const Blog = require('./models/blog') 
+const express = require('express'); // Install express
+const mongoose = require('mongoose'); // MongoDB ODM
+const Blog = require('./models/blog');
+const methodOverride = require('method-override'); // For the update
+const multer = require('multer'); // IMAGE
+const path = require('path');
+const fs = require('fs');
 
-const app = express();// EXPRESS APP
-//connect to mongodb
+const app = express();
+
+// Connect to MongoDB
 const dbURI = 'mongodb+srv://jcm:adminjc@prefinals.slobvrt.mongodb.net/prefinals?retryWrites=true&w=majority&appName=prefinals';
-
 
 mongoose.connect(dbURI)
     .then((result) => app.listen(3000))
-    .catch((err) => console.log(err))
+    .catch((err) => console.log(err));
 
+// MIDDLEWARE
+app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
+app.set('view engine', 'ejs');
+app.use(methodOverride('_method'));
 
-//MIDDLEWARE
-app.use(express.static('public')) // Serve static files from 'public' folder
-app.use(express.urlencoded({extended: true}));
-app.set('view engine', 'ejs')// install ejs and create views folder
+// Configure Multer to handle file upload
+const storage = multer.memoryStorage(); // Storing the image in memory instead of a folder
+const upload = multer({
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+        const filetypes = /jpeg|jpg|png|gif/;
+        const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+        const mimetype = filetypes.test(file.mimetype);
+        
+        if (extname && mimetype) {
+            return cb(null, true);
+        }
+        cb('Error: Images Only!'); // Error Handling
+    }
+});
 
+// ROUTES
 
-//route sandbox for MONGOOSE AND MONGODB
-// app.get('/add-blog', (req, res) => {
-//     const blog = new Blog({
-//         title : 'new blog 2',
-//         snippet: 'about my new blog',
-//         body: 'more about my new blog'
-//     });
-//     blog.save() //used to save to the database
-//         .then((result) => {
-//             res.send(result);
-//         })
-//         .catch((err) => {
-//             console.log(err);
-//         })
-// })
+// Home Page
+app.get('/', (req, res) => {
+    res.redirect('/blogs');
+});
 
-// app.get('/all-blogs', (req, res) => {
-//     Blog.find()
-//         .then((result) => {
-//             res.send(result);
-//         })
-//         .catch((err) => {
-//             console.log(err);
-//         });
-// })
+// About Page
+app.get('/about', (req, res) => {
+    res.render('about', { title: "About" });
+});
 
-// app.get('/single-blog', (req,res) => {
-//     Blog.findById('67ffc6491df8926a473a2ad4')
-//         .then((result) => {
-//             res.send(result);
-//         })
-//         .catch((err) => {
-//             console.log(err);
-//         });
-// })
+// Create Page
+app.get('/create', (req, res) => {
+    res.render('create', { title: "Create" });
+});
 
-//ROUTES
+// Edit Page
+app.get('/blogs/:id/edit', (req, res) => {
+    Blog.findById(req.params.id)
+        .then(blog => {
+            res.render('edit', { blog, title: 'Edit Blog' });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(404).render('404', { title: '404' });
+        });
+});
 
-//Home Page
-app.get('/', (req,res) => {
-   res.redirect('/blogs')
-})
+// Image Route for Displaying
+app.get('/blogs/:id/image', async (req, res) => {
+    try {
+        const blog = await Blog.findById(req.params.id);
+        if (blog && blog.image && blog.image.data) {
+            res.set('Content-Type', blog.image.contentType);
+            res.send(blog.image.data);
+        } else {
+            res.status(404).send('Image not found');
+        }
+    } catch (err) {
+        res.status(500).send('Server Error');
+    }
 
-//About Page
-app.get('/about', (req,res) => {
-    res.render('about', {title: "About"})
-})
+    console.log("Image data length: ", blog.image?.data?.length);
+    console.log("Content Type: ", blog.image?.contentType);
 
-//Routing for create
-app.get('/create', (req,res) => {
-    res.render('create', {title: "Create"})
-})
+});
 
-//Page not FOUND
-app.use('/',(req,res) => {
-    res.status(404).render('404', {title: "404"})
-})
-
-
-//CONTROLLERS
-
-//GET ALL
+// Get All Blogs
 app.get('/blogs', (req, res) => {
-    Blog.find().sort({createdAt: -1 })
+    Blog.find().sort({ createdAt: -1 })
         .then((result) => {
-            res.render('index', {title: 'All Blogs', blogs: result});
+            res.render('index', { title: 'All Blogs', blogs: result });
         })
         .catch((err) => {
             console.log(err);
         });
 });
 
-//CREATE
-app.post('/blogs', (req, res) => {
-    const blog = new Blog(req.body);
+//FOR DEBUGGING PURPOSES ONLY
+app.use((req, res, next) => {
+    console.log('Middleware triggered: ', req.method, req.url);
+    next();
+  });
+  
+// Create a New Blog with Image Upload
+app.post('/blogs', upload.single('image'), (req, res) => {
+    const blog = new Blog({
+        title: req.body.title,
+        snippet: req.body.snippet,
+        body: req.body.body,
+        image: req.file ? {
+            data: req.file.buffer,  // Image buffer
+            contentType: req.file.mimetype
+        } : null,  // If no image is provided, don't add an image
+    });
+
     blog.save()
-        .then((result) => {
-            res.redirect('/blogs')
-        })
-        .catch((err) => {
-            console.log(err)
-        }); 
+        .then(() => res.redirect('/blogs'))
+        .catch(err => console.log(err));
+
+    console.log("File: ", req.file);
+    console.log("MULTER file:", req.file); // this should not be undefined
+    console.log("BODY:", req.body);        // confirm body still works
 });
 
-//GET BY ID
+// Get Blog by ID
 app.get('/blogs/:id', (req, res) => {
     const id = req.params.id;
 
     Blog.findById(id)
         .then(result => {
-            res.render('details', {blog: result, title: 'Blog Details'});
+            res.render('details', { blog: result, title: 'Blog Details' });
         })
         .catch((err) => {
             console.log(err);
+            res.status(404).render('404', { title: '404' });
         });
-}) 
+});
 
-//DELETE BY ID
+// Delete Blog by ID
 app.delete('/blogs/:id', (req, res) => {
     const id = req.params.id;
 
     Blog.findByIdAndDelete(id)
         .then(result => {
-            res.json({ redirect: '/blogs' })
+            res.json({ redirect: '/blogs' });
         })
         .catch(err => {
-            console.log(err)
+            console.log(err);
         });
 });
 
+// Update Blog by ID
+app.put('/blogs/:id', (req, res) => {
+    const id = req.params.id;
 
+    Blog.findByIdAndUpdate(id, req.body, { new: true })
+        .then(result => {
+            res.redirect(`/blogs/${id}`);
+        })
+        .catch(err => {
+            console.log(err);
+        });
+});
+
+// 404 Page
+app.use((req, res) => {
+    res.status(404).render('404', { title: "404" });
+});

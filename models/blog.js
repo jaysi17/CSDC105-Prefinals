@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema; // thing that a model wraps around
+const Schema = mongoose.Schema;
 
-//schema structure
+// Schema structure
 const blogSchema = new Schema({
     title: {
         type: String,
@@ -14,11 +14,15 @@ const blogSchema = new Schema({
     body: {
         type: String,
         required: true
+    },
+    image: {
+        data: Buffer, // Store image data as a Buffer
+        contentType: String // Store the image MIME type
     }
-}, {timestamps: true});
+}, { timestamps: true });
 
-//create model based on the schema
+// Create model based on the schema
 const Blog = mongoose.model('Blog', blogSchema);
 
-//export model
+// Export model
 module.exports = Blog;

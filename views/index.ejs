@@ -1,19 +1,22 @@
 <%- include('common/header') %>
-    <div class="container">
-        <h1>My Blogs</h1>
-        <% if (blogs.length > 0) { %>
-            <% blogs.forEach(blog => { %>
-                <a class="single" href="/blogs/<%= blog._id %>">
-                    <div class="blog-card">
-                        <h3 class="title"> <%= blog.title %> </h3>
-                        <p class="snippet"> <%= blog.snippet %> </p>    
+<div class="container">
+    <h1>My Blogs</h1>
+    <% if (blogs.length > 0) { %>
+        <% blogs.forEach(blog => { %>
+            <a class="single" href="/blogs/<%= blog._id %>">
+                <div class="blog-card">
+                    <% if (blog.image && blog.image.data) { %>
+                        <img src="/blogs/<%= blog._id %>/image" alt="Blog Image" />
+                    <% } %>                    
+                    <div class="blog-info">
+                        <h3 class="title"><%= blog.title %></h3>
+                        <p class="snippet"><%= blog.snippet %></p>
                     </div>
-                </a>
-            <% }) %>
-        <% } else { %>
-            <p class="empty-blogs"> There are no blogs to display..... </p>
-        <% } %>
-    </div>
+                </div>
+            </a>
+        <% }) %>
+    <% } else { %>
+        <p class="empty-blogs">There are no blogs to display.....</p>
+    <% } %>
+</div>
 <%- include('common/footer') %>
-
-

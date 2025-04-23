@@ -1,10 +1,21 @@
 <%- include('common/header') %>
     <div class="details-content">
         <h2><%= blog.title %></h2>
+        <h3><%= blog.snippet %></h3>
         <div class="content">
-            <p><%= blog.body %></p>
+            <div class="text-container">
+                <p><%= blog.body %></p>
+            </div>
+            <% if (blog.image && blog.image.data) { %>
+                <div class="image-section">
+                    <img src="/blogs/<%= blog._id %>/image" alt="Blog Image" />
+                </div>
+            <% } %>
         </div>
-        <a class="delete" data-doc="<%= blog._id %>">delete</a>
+        <div class="buttons">
+            <a class="update" href="/blogs/<%= blog._id %>/edit">edit</a>
+            <a class="delete" data-doc="<%= blog._id %>">delete</a>
+        </div>
     </div>
 
     <script>
